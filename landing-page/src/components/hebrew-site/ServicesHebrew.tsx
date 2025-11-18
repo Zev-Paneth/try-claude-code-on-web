@@ -46,11 +46,11 @@ export const ServicesHebrew = () => {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section ref={ref} className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-black" dir="rtl">
+    <section ref={ref} className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gray-50 dark:bg-black transition-colors duration-300" dir="rtl">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black" />
-      <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/20 rounded-full blur-[150px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-purple-100/20 to-gray-50 dark:from-black dark:via-purple-950/10 dark:to-black" />
+      <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/10 dark:bg-primary/20 rounded-full blur-[150px]" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 dark:bg-secondary/20 rounded-full blur-[150px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
@@ -69,11 +69,82 @@ export const ServicesHebrew = () => {
             <span className="text-sm font-semibold text-gradient">השירותים שלנו</span>
           </motion.div>
 
-          <h2 className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="text-gradient glow">מה אנחנו בונים</span>
+          <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-black mb-6 leading-none">
+            <span className="inline-block relative">
+              <motion.span
+                animate={{
+                  scale: [1, 1.01, 1],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                style={{
+                  textShadow: `
+                    0 0 60px rgba(99, 102, 241, 0.7),
+                    0 0 30px rgba(236, 72, 153, 0.5),
+                    0 0 15px rgba(139, 92, 246, 0.4),
+                    0 8px 40px rgba(0, 0, 0, 0.6),
+                    0 15px 80px rgba(99, 102, 241, 0.4)
+                  `,
+                  background: 'linear-gradient(120deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #4facfe 60%, #00f2fe 80%, #667eea 100%)',
+                  backgroundSize: '300% 300%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+                className="inline-block"
+              >
+                <motion.span
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                  style={{
+                    background: 'linear-gradient(120deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #4facfe 60%, #00f2fe 80%, #667eea 100%)',
+                    backgroundSize: '300% 300%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    display: 'inline-block',
+                  }}
+                >
+                  מה אנחנו בונים
+                </motion.span>
+              </motion.span>
+
+              {/* 3D Effect Layers */}
+              <span
+                className="absolute top-0 left-0 -z-10 opacity-25 blur-sm"
+                style={{
+                  transform: 'translate(4px, 4px)',
+                  background: 'linear-gradient(120deg, #764ba2, #f093fb)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                מה אנחנו בונים
+              </span>
+              <span
+                className="absolute top-0 left-0 -z-20 opacity-15 blur-md"
+                style={{
+                  transform: 'translate(8px, 8px)',
+                  background: 'linear-gradient(120deg, #4facfe, #00f2fe)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                מה אנחנו בונים
+              </span>
+            </span>
           </h2>
 
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-700 dark:text-gray-400 max-w-3xl mx-auto">
             אנחנו משלבים יצירתיות, טכנולוגיה וחדשנות כדי לספק
             פתרונות שעולים על הציפיות
           </p>
@@ -112,7 +183,7 @@ const ServiceCard = ({ service, index: _index, isInView }: ServiceCardProps) => 
       whileHover={{ y: -10, scale: 1.02 }}
       className="group relative"
     >
-      <div className={`glass rounded-2xl p-8 h-full relative overflow-hidden transition-all duration-500 hover:bg-white/10 ${service.shadowColor} hover:shadow-2xl`}>
+      <div className={`glass rounded-2xl p-8 h-full relative overflow-hidden transition-all duration-500 hover:bg-gray-200/30 dark:hover:bg-white/10 ${service.shadowColor} hover:shadow-2xl border border-gray-200 dark:border-white/10`}>
         {/* Animated Border */}
         <motion.div
           className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
@@ -139,11 +210,11 @@ const ServiceCard = ({ service, index: _index, isInView }: ServiceCardProps) => 
         </motion.div>
 
         {/* Content */}
-        <h3 className="text-2xl font-bold mb-4 text-white relative z-10">
+        <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white relative z-10">
           {service.title}
         </h3>
 
-        <p className="text-gray-400 leading-relaxed mb-6 relative z-10">
+        <p className="text-gray-700 dark:text-gray-400 leading-relaxed mb-6 relative z-10">
           {service.description}
         </p>
 
@@ -155,7 +226,7 @@ const ServiceCard = ({ service, index: _index, isInView }: ServiceCardProps) => 
               initial={{ opacity: 0, x: -20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.4, delay: service.delay + idx * 0.1 }}
-              className="flex items-center gap-3 text-gray-300"
+              className="flex items-center gap-3 text-gray-700 dark:text-gray-300"
             >
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}

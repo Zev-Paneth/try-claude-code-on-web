@@ -70,12 +70,12 @@ export const HeroHebrew = () => {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black transition-colors duration-300"
       dir="rtl"
     >
       {/* Animated Grid Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/20 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-purple-100/30 to-gray-50 dark:from-black dark:via-purple-950/20 dark:to-black" />
         <div className="absolute inset-0" style={{
           backgroundImage: `
             linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
@@ -94,13 +94,13 @@ export const HeroHebrew = () => {
       </div>
 
       {/* Floating Tech Icons */}
-      <div className="floating-icon absolute top-20 right-20 opacity-10">
+      <div className="floating-icon absolute top-20 right-20 opacity-5 dark:opacity-10">
         <Code2 className="w-24 h-24 text-primary" />
       </div>
-      <div className="floating-icon absolute bottom-32 left-20 opacity-10">
+      <div className="floating-icon absolute bottom-32 left-20 opacity-5 dark:opacity-10">
         <Zap className="w-20 h-20 text-secondary" />
       </div>
-      <div className="floating-icon absolute top-1/3 left-1/3 opacity-10">
+      <div className="floating-icon absolute top-1/3 left-1/3 opacity-5 dark:opacity-10">
         <Sparkles className="w-16 h-16 text-accent" />
       </div>
 
@@ -137,39 +137,126 @@ export const HeroHebrew = () => {
           </div>
         </motion.div>
 
-        {/* Main Heading */}
+        {/* Main Heading - ULTRA IMPRESSIVE */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight"
+          className="text-7xl md:text-9xl lg:text-[12rem] font-black mb-10 leading-[0.9] tracking-tighter"
         >
-          <span className="inline-block">
+          <span className="inline-block relative">
             <motion.span
-              className="text-gradient glow"
+              className="relative inline-block"
               animate={{
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                scale: [1, 1.02, 1],
               }}
               transition={{
-                duration: 5,
+                duration: 3,
                 repeat: Infinity,
-                ease: 'linear'
+                ease: 'easeInOut'
               }}
               style={{
-                backgroundSize: '200% 200%',
+                textShadow: `
+                  0 0 80px rgba(99, 102, 241, 0.8),
+                  0 0 40px rgba(236, 72, 153, 0.6),
+                  0 0 20px rgba(139, 92, 246, 0.5),
+                  0 10px 50px rgba(0, 0, 0, 0.5),
+                  0 20px 100px rgba(99, 102, 241, 0.3)
+                `,
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+                backgroundSize: '400% 400%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              <motion.span
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: 'linear'
+                }}
+                style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+                  backgroundSize: '400% 400%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  display: 'inline-block',
+                }}
+              >
+                בונים לכם
+              </motion.span>
+            </motion.span>
+
+            {/* 3D Effect Layers */}
+            <span
+              className="absolute top-0 left-0 -z-10 opacity-30 blur-sm"
+              style={{
+                transform: 'translate(3px, 3px)',
+                background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
               }}
             >
               בונים לכם
-            </motion.span>
+            </span>
+            <span
+              className="absolute top-0 left-0 -z-20 opacity-20 blur-md"
+              style={{
+                transform: 'translate(6px, 6px)',
+                background: 'linear-gradient(135deg, #f093fb, #4facfe)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              בונים לכם
+            </span>
           </span>
           <br />
           <motion.span
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="inline-block text-white"
+            className="inline-block relative"
+            style={{
+              textShadow: `
+                0 0 60px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(99, 102, 241, 0.4),
+                0 5px 40px rgba(0, 0, 0, 0.6),
+                0 15px 80px rgba(139, 92, 246, 0.4)
+              `,
+              fontWeight: 900,
+            }}
           >
-            את העתיד
+            <motion.span
+              animate={{
+                textShadow: [
+                  '0 0 60px rgba(255, 255, 255, 0.6), 0 5px 40px rgba(0, 0, 0, 0.6)',
+                  '0 0 80px rgba(255, 255, 255, 0.8), 0 5px 50px rgba(99, 102, 241, 0.5)',
+                  '0 0 60px rgba(255, 255, 255, 0.6), 0 5px 40px rgba(0, 0, 0, 0.6)',
+                ]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              className="text-white inline-block"
+            >
+              את העתיד
+            </motion.span>
+
+            {/* Subtle 3D layers for second line */}
+            <span
+              className="absolute top-0 left-0 -z-10 text-white/20 blur-[1px]"
+              style={{ transform: 'translate(2px, 2px)' }}
+            >
+              את העתיד
+            </span>
           </motion.span>
         </motion.h1>
 
@@ -178,7 +265,7 @@ export const HeroHebrew = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-xl md:text-2xl text-gray-400 mb-4 max-w-3xl mx-auto"
+          className="text-xl md:text-2xl text-gray-700 dark:text-gray-400 mb-4 max-w-3xl mx-auto"
         >
           שני מפתחים מקצועיים שיוצרים חוויות דיגיטליות
           <span className="text-gradient font-semibold"> מדהימות</span>,
@@ -190,7 +277,7 @@ export const HeroHebrew = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-lg text-gray-500 mb-12"
+          className="text-lg text-gray-600 dark:text-gray-500 mb-12"
         >
           אתרים • מערכות ניהול • דשבורדים • אוטומציות
         </motion.p>
@@ -220,7 +307,7 @@ export const HeroHebrew = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-10 py-5 glass rounded-full text-white font-semibold text-lg hover:bg-white/10 transition-all"
+            className="px-10 py-5 glass rounded-full text-gray-800 dark:text-white font-semibold text-lg hover:bg-gray-100/50 dark:hover:bg-white/10 transition-all border border-gray-300 dark:border-white/20"
           >
             לראות דוגמאות עבודה
           </motion.button>
@@ -249,7 +336,7 @@ export const HeroHebrew = () => {
               <div className="text-3xl md:text-4xl font-black text-gradient mb-2">
                 {stat.number}
               </div>
-              <div className="text-sm md:text-base text-gray-400">{stat.label}</div>
+              <div className="text-sm md:text-base text-gray-600 dark:text-gray-400">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
@@ -264,12 +351,12 @@ export const HeroHebrew = () => {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
+            className="w-6 h-10 border-2 border-gray-400/50 dark:border-white/30 rounded-full flex items-start justify-center p-2"
           >
             <motion.div
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="w-1 h-2 bg-white/60 rounded-full"
+              className="w-1 h-2 bg-gray-500/70 dark:bg-white/60 rounded-full"
             />
           </motion.div>
         </motion.div>

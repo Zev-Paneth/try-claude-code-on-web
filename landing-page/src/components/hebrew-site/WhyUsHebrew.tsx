@@ -76,7 +76,7 @@ export const WhyUsHebrew = () => {
     <section
       ref={ref}
       id="why-us"
-      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-gradient-to-b from-slate-950 via-slate-900 to-black dark:from-black dark:via-slate-950 dark:to-slate-900 overflow-hidden"
+      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-gradient-to-b from-white via-gray-100 to-gray-50 dark:from-slate-950 dark:via-slate-900 dark:to-black overflow-hidden transition-colors duration-300"
       dir="rtl"
     >
       {/* Animated Background */}
@@ -121,18 +121,123 @@ export const WhyUsHebrew = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black mb-6"
+            className="text-6xl md:text-8xl lg:text-[9rem] font-black mb-6 leading-none"
           >
-            <span className="text-gradient glow">למה לבחור</span>
+            <span className="inline-block relative">
+              <motion.span
+                animate={{
+                  scale: [1, 1.015, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                style={{
+                  textShadow: `
+                    0 0 50px rgba(59, 130, 246, 0.8),
+                    0 0 25px rgba(147, 51, 234, 0.6),
+                    0 0 12px rgba(236, 72, 153, 0.5),
+                    0 6px 35px rgba(0, 0, 0, 0.7),
+                    0 12px 70px rgba(59, 130, 246, 0.5)
+                  `,
+                  background: 'linear-gradient(110deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #3b82f6 100%)',
+                  backgroundSize: '350% 350%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+                className="inline-block"
+              >
+                <motion.span
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                  style={{
+                    background: 'linear-gradient(110deg, #3b82f6 0%, #8b5cf6 25%, #ec4899 50%, #f59e0b 75%, #3b82f6 100%)',
+                    backgroundSize: '350% 350%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    display: 'inline-block',
+                  }}
+                >
+                  למה לבחור
+                </motion.span>
+              </motion.span>
+
+              {/* 3D Layers */}
+              <span
+                className="absolute top-0 left-0 -z-10 opacity-30 blur-[2px]"
+                style={{
+                  transform: 'translate(3px, 3px)',
+                  background: 'linear-gradient(110deg, #8b5cf6, #ec4899)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                למה לבחור
+              </span>
+              <span
+                className="absolute top-0 left-0 -z-20 opacity-20 blur-md"
+                style={{
+                  transform: 'translate(6px, 6px)',
+                  background: 'linear-gradient(110deg, #ec4899, #f59e0b)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                למה לבחור
+              </span>
+            </span>
             <br />
-            <span className="text-white">בנו?</span>
+            <motion.span
+              initial={{ opacity: 0, x: -30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="inline-block relative"
+            >
+              <motion.span
+                animate={{
+                  textShadow: [
+                    '0 0 40px rgba(255, 255, 255, 0.7), 0 4px 30px rgba(0, 0, 0, 0.7)',
+                    '0 0 60px rgba(255, 255, 255, 0.9), 0 4px 40px rgba(59, 130, 246, 0.6)',
+                    '0 0 40px rgba(255, 255, 255, 0.7), 0 4px 30px rgba(0, 0, 0, 0.7)',
+                  ]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                className="text-white inline-block"
+                style={{
+                  textShadow: '0 0 40px rgba(255, 255, 255, 0.7), 0 4px 30px rgba(0, 0, 0, 0.7)'
+                }}
+              >
+                בנו?
+              </motion.span>
+
+              {/* 3D layer for second word */}
+              <span
+                className="absolute top-0 left-0 -z-10 text-white/20 blur-[1px]"
+                style={{ transform: 'translate(2px, 2px)' }}
+              >
+                בנו?
+              </span>
+            </motion.span>
           </motion.h2>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-slate-400 max-w-3xl mx-auto"
+            className="text-xl text-gray-700 dark:text-slate-400 max-w-3xl mx-auto"
           >
             אנחנו לא רק מפתחים - אנחנו{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-bold">
@@ -161,7 +266,7 @@ export const WhyUsHebrew = () => {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="mt-20 text-center"
         >
-          <p className="text-xl text-slate-300 mb-8 font-semibold">
+          <p className="text-xl text-gray-800 dark:text-slate-300 mb-8 font-semibold">
             🚀 מוכנים להתחיל את המסע?
           </p>
           <motion.button
@@ -266,7 +371,7 @@ const ReasonCard = ({ reason, index, isInView }: ReasonCardProps) => {
     >
       <div
         ref={cardRef}
-        className="relative h-full p-8 bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-black rounded-2xl border-2 border-slate-700 dark:border-slate-800 hover:border-transparent overflow-hidden transform-gpu"
+        className="relative h-full p-8 bg-gradient-to-br from-white to-gray-100 dark:from-slate-900 dark:to-slate-800 rounded-2xl border-2 border-gray-200 dark:border-slate-700 hover:border-transparent overflow-hidden transform-gpu transition-colors duration-300"
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Animated Border Gradient */}
@@ -282,7 +387,7 @@ const ReasonCard = ({ reason, index, isInView }: ReasonCardProps) => {
           }}
           style={{ backgroundSize: '200% 100%' }}
         >
-          <div className="w-full h-full bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-black rounded-2xl" />
+          <div className="w-full h-full bg-gradient-to-br from-white to-gray-100 dark:from-slate-900 dark:to-slate-800 rounded-2xl" />
         </motion.div>
 
         {/* Corner Decorations */}
@@ -308,12 +413,12 @@ const ReasonCard = ({ reason, index, isInView }: ReasonCardProps) => {
           </motion.div>
 
           {/* Title */}
-          <h3 className="text-2xl md:text-3xl font-black mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:via-blue-200 group-hover:to-purple-200 transition-all">
+          <h3 className="text-2xl md:text-3xl font-black mb-4 text-gray-900 dark:text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gray-700 group-hover:via-blue-600 group-hover:to-purple-600 dark:group-hover:from-white dark:group-hover:via-blue-200 dark:group-hover:to-purple-200 transition-all">
             {reason.title}
           </h3>
 
           {/* Description */}
-          <p className="text-slate-300 leading-relaxed">
+          <p className="text-gray-700 dark:text-slate-300 leading-relaxed">
             {reason.description}
           </p>
         </div>

@@ -70,7 +70,7 @@ export const ContactHebrew = () => {
     <section
       ref={ref}
       id="contact"
-      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-gradient-to-b from-black via-slate-950 to-slate-900 dark:from-slate-900 dark:via-black dark:to-slate-950 overflow-hidden"
+      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-gradient-to-b from-gray-50 via-white to-gray-100 dark:from-black dark:via-slate-950 dark:to-slate-900 overflow-hidden transition-colors duration-300"
       dir="rtl"
     >
       {/* Animated Background */}
@@ -129,18 +129,123 @@ export const ContactHebrew = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black mb-6"
+            className="text-6xl md:text-8xl lg:text-[9rem] font-black mb-6 leading-none"
           >
-            <span className="text-gradient glow">בואו נדבר</span>
+            <span className="inline-block relative">
+              <motion.span
+                animate={{
+                  scale: [1, 1.02, 1],
+                }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                style={{
+                  textShadow: `
+                    0 0 55px rgba(236, 72, 153, 0.8),
+                    0 0 28px rgba(59, 130, 246, 0.6),
+                    0 0 14px rgba(245, 158, 11, 0.5),
+                    0 7px 38px rgba(0, 0, 0, 0.7),
+                    0 14px 75px rgba(236, 72, 153, 0.5)
+                  `,
+                  background: 'linear-gradient(125deg, #ec4899 0%, #3b82f6 25%, #f59e0b 50%, #8b5cf6 75%, #ec4899 100%)',
+                  backgroundSize: '320% 320%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+                className="inline-block"
+              >
+                <motion.span
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  }}
+                  transition={{
+                    duration: 5.5,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                  style={{
+                    background: 'linear-gradient(125deg, #ec4899 0%, #3b82f6 25%, #f59e0b 50%, #8b5cf6 75%, #ec4899 100%)',
+                    backgroundSize: '320% 320%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    display: 'inline-block',
+                  }}
+                >
+                  בואו נדבר
+                </motion.span>
+              </motion.span>
+
+              {/* 3D Layers */}
+              <span
+                className="absolute top-0 left-0 -z-10 opacity-30 blur-[2px]"
+                style={{
+                  transform: 'translate(3px, 3px)',
+                  background: 'linear-gradient(125deg, #3b82f6, #f59e0b)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                בואו נדבר
+              </span>
+              <span
+                className="absolute top-0 left-0 -z-20 opacity-20 blur-md"
+                style={{
+                  transform: 'translate(6px, 6px)',
+                  background: 'linear-gradient(125deg, #f59e0b, #8b5cf6)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                בואו נדבר
+              </span>
+            </span>
             <br />
-            <span className="text-white">על הפרויקט</span>
+            <motion.span
+              initial={{ opacity: 0, x: 30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.25 }}
+              className="inline-block relative"
+            >
+              <motion.span
+                animate={{
+                  textShadow: [
+                    '0 0 45px rgba(255, 255, 255, 0.75), 0 5px 32px rgba(0, 0, 0, 0.7)',
+                    '0 0 65px rgba(255, 255, 255, 0.95), 0 5px 42px rgba(236, 72, 153, 0.6)',
+                    '0 0 45px rgba(255, 255, 255, 0.75), 0 5px 32px rgba(0, 0, 0, 0.7)',
+                  ]
+                }}
+                transition={{
+                  duration: 2.2,
+                  repeat: Infinity,
+                  ease: 'easeInOut'
+                }}
+                className="text-white inline-block"
+                style={{
+                  textShadow: '0 0 45px rgba(255, 255, 255, 0.75), 0 5px 32px rgba(0, 0, 0, 0.7)'
+                }}
+              >
+                על הפרויקט
+              </motion.span>
+
+              {/* 3D layer for second line */}
+              <span
+                className="absolute top-0 left-0 -z-10 text-white/20 blur-[1px]"
+                style={{ transform: 'translate(2px, 2px)' }}
+              >
+                על הפרויקט
+              </span>
+            </motion.span>
           </motion.h2>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ delay: 0.2 }}
-            className="text-xl text-slate-300 max-w-3xl mx-auto"
+            className="text-xl text-gray-700 dark:text-slate-300 max-w-3xl mx-auto"
           >
             נשמח לשמוע עליכם ולהבין כיצד נוכל{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-bold">
@@ -157,9 +262,9 @@ export const ContactHebrew = () => {
             transition={{ duration: 0.6 }}
             className="space-y-8"
           >
-            <div className="glass p-8 rounded-2xl border-2 border-white/10">
-              <h3 className="text-3xl font-black mb-4 text-white">פרטי התקשרות</h3>
-              <p className="text-slate-300 leading-relaxed">
+            <div className="glass p-8 rounded-2xl border-2 border-gray-200 dark:border-white/10">
+              <h3 className="text-3xl font-black mb-4 text-gray-900 dark:text-white">פרטי התקשרות</h3>
+              <p className="text-gray-700 dark:text-slate-300 leading-relaxed">
                 ניתן ליצור קשר בכל דרך שנוחה לכם. נחזור אליכם{' '}
                 <span className="text-blue-400 font-bold">בהקדם האפשרי</span>.
               </p>
@@ -193,7 +298,7 @@ export const ContactHebrew = () => {
                 whileHover={{ scale: 1.02, x: 5 }}
                 className="group relative overflow-hidden"
               >
-                <div className="relative glass flex items-center gap-4 p-6 rounded-2xl border-2 border-white/10 hover:border-white/20 transition-all">
+                <div className="relative glass flex items-center gap-4 p-6 rounded-2xl border-2 border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all">
                   {/* Background Gradient on Hover */}
                   <motion.div
                     className={`absolute inset-0 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-10 transition-opacity`}
@@ -211,8 +316,8 @@ export const ContactHebrew = () => {
                   </motion.div>
 
                   <div className="relative z-10">
-                    <div className="text-sm text-slate-400 mb-1 font-semibold">{item.title}</div>
-                    <div className="text-lg font-bold text-white">{item.value}</div>
+                    <div className="text-sm text-gray-600 dark:text-slate-400 mb-1 font-semibold">{item.title}</div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white">{item.value}</div>
                   </div>
                 </div>
               </motion.div>
@@ -233,7 +338,7 @@ export const ContactHebrew = () => {
                 transition={{ delay: 0.3 }}
                 className="relative group"
               >
-                <label className="block text-sm font-bold text-slate-300 mb-2">
+                <label className="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">
                   שם מלא <span className="text-pink-400">*</span>
                 </label>
                 <div className="relative">
@@ -245,7 +350,7 @@ export const ContactHebrew = () => {
                     onFocus={() => setFocusedField('name')}
                     onBlur={() => setFocusedField(null)}
                     required
-                    className="w-full px-4 py-4 glass border-2 border-white/10 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all"
+                    className="w-full px-4 py-4 glass border-2 border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all"
                     placeholder="איך קוראים לכם?"
                   />
                   {/* Animated Underline */}
@@ -265,7 +370,7 @@ export const ContactHebrew = () => {
                 transition={{ delay: 0.4 }}
                 className="relative group"
               >
-                <label className="block text-sm font-bold text-slate-300 mb-2">
+                <label className="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">
                   טלפון <span className="text-pink-400">*</span>
                 </label>
                 <div className="relative">
@@ -277,7 +382,7 @@ export const ContactHebrew = () => {
                     onFocus={() => setFocusedField('phone')}
                     onBlur={() => setFocusedField(null)}
                     required
-                    className="w-full px-4 py-4 glass border-2 border-white/10 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all"
+                    className="w-full px-4 py-4 glass border-2 border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all"
                     placeholder="050-123-4567"
                   />
                   <motion.div
@@ -296,7 +401,7 @@ export const ContactHebrew = () => {
                 transition={{ delay: 0.5 }}
                 className="relative group"
               >
-                <label className="block text-sm font-bold text-slate-300 mb-2">
+                <label className="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">
                   אימייל <span className="text-pink-400">*</span>
                 </label>
                 <div className="relative">
@@ -308,7 +413,7 @@ export const ContactHebrew = () => {
                     onFocus={() => setFocusedField('email')}
                     onBlur={() => setFocusedField(null)}
                     required
-                    className="w-full px-4 py-4 glass border-2 border-white/10 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all"
+                    className="w-full px-4 py-4 glass border-2 border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all"
                     placeholder="name@example.com"
                   />
                   <motion.div
@@ -327,7 +432,7 @@ export const ContactHebrew = () => {
                 transition={{ delay: 0.6 }}
                 className="relative group"
               >
-                <label className="block text-sm font-bold text-slate-300 mb-2">
+                <label className="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">
                   הודעה <span className="text-pink-400">*</span>
                 </label>
                 <div className="relative">
@@ -339,7 +444,7 @@ export const ContactHebrew = () => {
                     onBlur={() => setFocusedField(null)}
                     required
                     rows={5}
-                    className="w-full px-4 py-4 glass border-2 border-white/10 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none resize-none transition-all"
+                    className="w-full px-4 py-4 glass border-2 border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-blue-500 focus:outline-none resize-none transition-all"
                     placeholder="ספרו לנו על הפרויקט שלכם..."
                   />
                   <motion.div
@@ -413,7 +518,7 @@ export const ContactHebrew = () => {
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ delay: 0.8 }}
-                className="text-center text-sm text-slate-400"
+                className="text-center text-sm text-gray-600 dark:text-slate-400"
               >
                 ⚡ נחזור אליכם תוך{' '}
                 <span className="text-blue-400 font-bold">24 שעות</span>

@@ -55,7 +55,7 @@ export const NavigationHebrew = () => {
         transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'glass backdrop-blur-xl shadow-2xl border-b-2 border-white/10'
+            ? 'glass backdrop-blur-xl shadow-2xl border-b-2 border-gray-200 dark:border-white/10'
             : 'bg-transparent'
         }`}
         dir="rtl"
@@ -78,7 +78,7 @@ export const NavigationHebrew = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
                 <span className="relative text-white font-black text-xl">C</span>
               </motion.div>
-              <span className="text-xl font-black text-white">
+              <span className="text-xl font-black text-gray-900 dark:text-white">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                   שם החברה
                 </span>
@@ -99,7 +99,7 @@ export const NavigationHebrew = () => {
                     className={`relative z-10 ${
                       activeSection === item.href.substring(1)
                         ? 'text-white'
-                        : 'text-slate-400 group-hover:text-white'
+                        : 'text-gray-600 dark:text-slate-400 group-hover:text-gray-900 dark:group-hover:text-white'
                     }`}
                   >
                     {item.label}
@@ -226,7 +226,7 @@ export const NavigationHebrew = () => {
               dir="rtl"
             >
               {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-black opacity-95" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-slate-950 dark:via-slate-900 dark:to-black opacity-95" />
 
               <div className="relative z-10 p-6 pt-24">
                 <nav className="space-y-3">
@@ -242,7 +242,7 @@ export const NavigationHebrew = () => {
                       className={`block w-full text-right px-6 py-4 text-lg font-bold rounded-xl transition-all ${
                         activeSection === item.href.substring(1)
                           ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-lg'
-                          : 'text-slate-300 hover:text-white glass border-2 border-white/10 hover:border-white/20'
+                          : 'text-gray-700 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white glass border-2 border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
                       }`}
                     >
                       {item.label}

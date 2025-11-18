@@ -7,11 +7,15 @@ import { ContactHebrew } from './components/hebrew-site/ContactHebrew';
 import { WhatsAppButton } from './components/hebrew-site/WhatsAppButton';
 import { ScrollProgress } from './components/ScrollProgress';
 import { CustomCursor } from './components/CustomCursor';
+import { CodeRain } from './components/CodeRain';
 
 function AppHebrew() {
   return (
     <ThemeProvider>
       <div className="relative min-h-screen bg-white dark:bg-black transition-colors duration-300">
+        {/* Code Rain Background */}
+        <CodeRain />
+
         {/* Custom Cursor */}
         <CustomCursor />
 
