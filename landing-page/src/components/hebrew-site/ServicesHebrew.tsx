@@ -1,62 +1,81 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Globe, Database, BarChart3, Bot } from 'lucide-react';
+import { Globe, Database, BarChart3, Bot, ArrowLeft } from 'lucide-react';
 
 const services = [
   {
     icon: Globe,
     title: 'אתרים מתקדמים',
-    description: 'פיתוח אתרי אינטרנט מהירים, מאובטחים ומותאמים לכל מכשיר. אנו מתמחים ביצירת חוויות משתמש מעולות שמובילות לתוצאות עסקיות.',
-    features: ['SEO מ מושלם', 'ביצועים גבוהים', 'עיצוב רספונסיבי'],
+    description: 'אתרים מרהיבים ומהירים עם אנימציות מתקדמות, SEO מושלם, וחווית משתמש שמובילה להמרות גבוהות',
+    features: ['עיצוב מותאם אישית', 'ביצועים מקסימליים', 'רספונסיבי מושלם'],
+    color: 'from-blue-500 via-cyan-500 to-teal-500',
+    shadowColor: 'shadow-blue-500/50',
+    delay: 0
   },
   {
     icon: Database,
     title: 'מערכות ניהול מורכבות',
-    description: 'פיתוח מערכות ERP, CRM וכלי ניהול מותאמים אישית שמייעלים תהליכים עסקיים ומגדילים פרודוקטיביות.',
-    features: ['אוטומציה מלאה', 'אבטחת מידע', 'דוחות מתקדמים'],
+    description: 'מערכות ERP, CRM ומערכות ניהול מותאמות אישית שמייעלות את התהליכים העסקיים שלכם',
+    features: ['אוטומציה מלאה', 'דוחות בזמן אמת', 'אבטחה מקסימלית'],
+    color: 'from-purple-500 via-pink-500 to-rose-500',
+    shadowColor: 'shadow-purple-500/50',
+    delay: 0.15
   },
   {
     icon: BarChart3,
     title: 'דשבורדים וניתוח נתונים',
-    description: 'יצירת דשבורדים אינטראקטיביים המספקים תובנות עסקיות בזמן אמת ומסייעים בקבלת החלטות מושכלות.',
-    features: ['ויזואליזציה ברורה', 'עדכונים בזמן אמת', 'אינטגרציות'],
+    description: 'ויזואליזציה מתקדמת של נתונים, דשבורדים אינטראקטיביים, וכלי BI שמניעים החלטות עסקיות',
+    features: ['תצוגות אינטראקטיביות', 'עדכונים בזמן אמת', 'אנליטיקס מתקדמת'],
+    color: 'from-orange-500 via-amber-500 to-yellow-500',
+    shadowColor: 'shadow-orange-500/50',
+    delay: 0.3
   },
   {
     icon: Bot,
     title: 'אוטומציות ובוטים',
-    description: 'פיתוח פתרונות אוטומציה המייעלים תהליכים עסקיים, חוסכים זמן יקר ומפחיתים טעויות אנוש.',
-    features: ['זמינות 24/7', 'חיסכון בזמן', 'דיוק מקסימלי'],
+    description: 'בוטים חכמים, אוטומציות תהליכים, אינטגרציות API, וכלים שחוסכים לכם שעות עבודה',
+    features: ['חיסכון בזמן', 'דיוק מושלם', 'זמינות 24/7'],
+    color: 'from-green-500 via-emerald-500 to-teal-500',
+    shadowColor: 'shadow-green-500/50',
+    delay: 0.45
   },
 ];
 
 export const ServicesHebrew = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section
-      ref={ref}
-      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-white dark:bg-slate-900"
-      dir="rtl"
-    >
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <p className="text-blue-600 dark:text-blue-400 font-semibold mb-4 text-sm uppercase tracking-wide">
-            השירותים שלנו
-          </p>
+    <section ref={ref} className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-black" dir="rtl">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/10 to-black" />
+      <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[150px]" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/20 rounded-full blur-[150px]" />
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-            מה אנחנו מציעים
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6 }}
+            className="inline-block px-4 py-2 rounded-full glass mb-6"
+          >
+            <span className="text-sm font-semibold text-gradient">השירותים שלנו</span>
+          </motion.div>
+
+          <h2 className="text-5xl md:text-7xl font-bold mb-6">
+            <span className="text-gradient glow">מה אנחנו בונים</span>
           </h2>
 
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-            פתרונות טכנולוגיים מותאמים אישית לצרכים העסקיים שלכם
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            אנחנו משלבים יצירתיות, טכנולוגיה וחדשנות כדי לספק
+            פתרונות שעולים על הציפיות
           </p>
         </motion.div>
 
@@ -82,44 +101,89 @@ interface ServiceCardProps {
   isInView: boolean;
 }
 
-const ServiceCard = ({ service, index, isInView }: ServiceCardProps) => {
+const ServiceCard = ({ service, index: _index, isInView }: ServiceCardProps) => {
   const Icon = service.icon;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -4 }}
-      className="group"
+      transition={{ duration: 0.6, delay: service.delay }}
+      whileHover={{ y: -10, scale: 1.02 }}
+      className="group relative"
     >
-      <div className="h-full p-8 bg-slate-50 dark:bg-slate-800 rounded-xl border-2 border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-all">
+      <div className={`glass rounded-2xl p-8 h-full relative overflow-hidden transition-all duration-500 hover:bg-white/10 ${service.shadowColor} hover:shadow-2xl`}>
+        {/* Animated Border */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{
+            background: `linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.2) 50%, transparent 100%)`,
+          }}
+          animate={{
+            backgroundPosition: ['0% 0%', '100% 100%'],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            repeatType: 'reverse'
+          }}
+        />
+
         {/* Icon */}
-        <div className="w-14 h-14 rounded-lg bg-blue-600 dark:bg-blue-600 flex items-center justify-center mb-6">
-          <Icon className="w-7 h-7 text-white" />
-        </div>
+        <motion.div
+          whileHover={{ rotate: 360, scale: 1.1 }}
+          transition={{ duration: 0.6 }}
+          className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.color} p-3 mb-6 relative z-10 shadow-lg ${service.shadowColor}`}
+        >
+          <Icon className="w-full h-full text-white" />
+        </motion.div>
 
         {/* Content */}
-        <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-white">
+        <h3 className="text-2xl font-bold mb-4 text-white relative z-10">
           {service.title}
         </h3>
 
-        <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+        <p className="text-gray-400 leading-relaxed mb-6 relative z-10">
           {service.description}
         </p>
 
         {/* Features */}
-        <ul className="space-y-2">
+        <ul className="space-y-3 mb-6 relative z-10">
           {service.features.map((feature, idx) => (
-            <li
+            <motion.li
               key={idx}
-              className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.4, delay: service.delay + idx * 0.1 }}
+              className="flex items-center gap-3 text-gray-300"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: idx * 0.3 }}
+                className={`w-2 h-2 rounded-full bg-gradient-to-r ${service.color}`}
+              />
               <span>{feature}</span>
-            </li>
+            </motion.li>
           ))}
         </ul>
+
+        {/* CTA */}
+        <motion.button
+          whileHover={{ x: -5 }}
+          className={`flex items-center gap-2 text-lg font-bold bg-gradient-to-r ${service.color} bg-clip-text text-transparent group-hover:gap-4 transition-all relative z-10`}
+        >
+          <span>לפרטים נוספים</span>
+          <ArrowLeft className={`w-5 h-5 bg-gradient-to-r ${service.color} rounded-full p-1 text-white`} />
+        </motion.button>
+
+        {/* Background Gradient on Hover */}
+        <motion.div
+          className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity rounded-2xl`}
+        />
+
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-2xl" />
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-white/5 to-transparent rounded-full blur-2xl" />
       </div>
     </motion.div>
   );

@@ -107,7 +107,7 @@ interface ServiceCardProps {
   isInView: boolean;
 }
 
-const ServiceCard = ({ service, index, isInView }: ServiceCardProps) => {
+const ServiceCard = ({ service, index: _index, isInView }: ServiceCardProps) => {
   const Icon = service.icon;
 
   return (

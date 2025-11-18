@@ -52,95 +52,160 @@ export const NavigationHebrew = () => {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg'
+            ? 'glass backdrop-blur-xl shadow-2xl border-b-2 border-white/10'
             : 'bg-transparent'
         }`}
         dir="rtl"
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div
-              className="flex items-center gap-2 cursor-pointer"
+          <div className="flex items-center justify-between h-20">
+            {/* Logo with Rotation */}
+            <motion.div
+              className="flex items-center gap-3 cursor-pointer group"
               onClick={() => scrollToSection('#home')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">C</span>
-              </div>
-              <span className="text-xl font-bold text-slate-900 dark:text-white">
-                שם החברה
+              <motion.div
+                className="relative w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Glowing effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
+                <span className="relative text-white font-black text-xl">C</span>
+              </motion.div>
+              <span className="text-xl font-black text-white">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  שם החברה
+                </span>
               </span>
-            </div>
+            </motion.div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            {/* Desktop Navigation with Animated Indicators */}
+            <div className="hidden md:flex items-center gap-2">
               {navItems.map((item) => (
-                <button
+                <motion.button
                   key={item.href}
                   onClick={() => scrollToSection(item.href)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                    activeSection === item.href.substring(1)
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-                  }`}
+                  className="relative px-5 py-2.5 rounded-xl font-bold transition-all group"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {item.label}
-                </button>
+                  <span
+                    className={`relative z-10 ${
+                      activeSection === item.href.substring(1)
+                        ? 'text-white'
+                        : 'text-slate-400 group-hover:text-white'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+
+                  {/* Active Indicator with Layout Animation */}
+                  {activeSection === item.href.substring(1) && (
+                    <motion.div
+                      layoutId="activeSection"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl shadow-lg"
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+
+                  {/* Hover Effect */}
+                  {activeSection !== item.href.substring(1) && (
+                    <div className="absolute inset-0 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                  )}
+                </motion.button>
               ))}
 
-              {/* Theme Toggle */}
-              <button
+              {/* Theme Toggle with Rotation */}
+              <motion.button
                 onClick={toggleTheme}
-                className="mr-2 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="mr-3 p-3 rounded-xl glass border-2 border-white/10 hover:border-white/20 transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                {theme === 'dark' ? (
-                  <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                ) : (
-                  <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                )}
-              </button>
+                <motion.div
+                  animate={{ rotate: theme === 'dark' ? 0 : 180 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="w-5 h-5 text-yellow-400" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-blue-400" />
+                  )}
+                </motion.div>
+              </motion.button>
 
-              {/* CTA Button */}
-              <button
+              {/* CTA Button with Gradient */}
+              <motion.button
                 onClick={() => scrollToSection('#contact')}
-                className="mr-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-all"
+                className="relative mr-2 px-8 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl text-white font-black overflow-hidden group shadow-lg"
+                whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(59, 130, 246, 0.5)' }}
+                whileTap={{ scale: 0.95 }}
               >
-                צור קשר
-              </button>
+                <span className="relative z-10">צור קשר</span>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600"
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'linear'
+                  }}
+                  style={{ backgroundSize: '200% 100%' }}
+                />
+              </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="flex items-center gap-2 md:hidden">
-              <button
+              <motion.button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-2.5 rounded-xl glass border-2 border-white/10"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                {theme === 'dark' ? (
-                  <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                ) : (
-                  <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                )}
-              </button>
+                <motion.div
+                  animate={{ rotate: theme === 'dark' ? 0 : 180 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="w-5 h-5 text-yellow-400" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-blue-400" />
+                  )}
+                </motion.div>
+              </motion.button>
 
-              <button
+              <motion.button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-slate-600 dark:text-slate-400"
+                className="p-2.5 rounded-xl glass border-2 border-white/10"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
+                <motion.div
+                  animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {isMobileMenuOpen ? (
+                    <X className="w-6 h-6 text-white" />
+                  ) : (
+                    <Menu className="w-6 h-6 text-white" />
+                  )}
+                </motion.div>
+              </motion.button>
             </div>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu with Enhanced Animations */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -149,35 +214,64 @@ export const NavigationHebrew = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 md:hidden"
             />
 
             <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.3 }}
-              className="fixed top-0 left-0 bottom-0 w-64 bg-white dark:bg-slate-900 shadow-2xl z-50 md:hidden"
+              initial={{ x: '100%', opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="fixed top-0 left-0 bottom-0 w-80 glass backdrop-blur-2xl border-r-2 border-white/10 shadow-2xl z-50 md:hidden"
               dir="rtl"
             >
-              <div className="p-6 pt-20">
-                <nav className="space-y-2">
-                  {navItems.map((item) => (
-                    <button
+              {/* Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-black opacity-95" />
+
+              <div className="relative z-10 p-6 pt-24">
+                <nav className="space-y-3">
+                  {navItems.map((item, index) => (
+                    <motion.button
                       key={item.href}
                       onClick={() => scrollToSection(item.href)}
-                      className="block w-full text-right px-4 py-3 text-lg font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02, x: 5 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`block w-full text-right px-6 py-4 text-lg font-bold rounded-xl transition-all ${
+                        activeSection === item.href.substring(1)
+                          ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-lg'
+                          : 'text-slate-300 hover:text-white glass border-2 border-white/10 hover:border-white/20'
+                      }`}
                     >
                       {item.label}
-                    </button>
+                    </motion.button>
                   ))}
 
-                  <button
+                  <motion.button
                     onClick={() => scrollToSection('#contact')}
-                    className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold mt-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="relative w-full px-6 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl text-white font-black text-lg mt-6 overflow-hidden shadow-xl"
                   >
-                    צור קשר
-                  </button>
+                    <span className="relative z-10">צור קשר</span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600"
+                      animate={{
+                        backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: 'linear'
+                      }}
+                      style={{ backgroundSize: '200% 100%' }}
+                    />
+                  </motion.button>
                 </nav>
               </div>
             </motion.div>

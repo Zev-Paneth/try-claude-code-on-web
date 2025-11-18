@@ -1,53 +1,140 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { gsap } from 'gsap';
+import { Code2, Sparkles, ArrowLeft, Zap } from 'lucide-react';
 
 export const HeroHebrew = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [typedText, setTypedText] = useState('');
+  const fullText = 'מערכות מתקדמות // אתרים מרהיבים // פתרונות חכמים';
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 500]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  // Typing animation
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index <= fullText.length) {
+        setTypedText(fullText.slice(0, index));
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 60);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Floating orbs animation
+      gsap.to('.orb', {
+        y: 'random(-50, 50)',
+        x: 'random(-30, 30)',
+        scale: 'random(0.8, 1.2)',
+        duration: 'random(3, 5)',
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: {
+          amount: 1,
+          from: 'random'
+        }
+      });
+
+      // Floating tech icons
+      gsap.to('.floating-icon', {
+        y: 'random(-20, 20)',
+        x: 'random(-20, 20)',
+        rotation: 'random(-15, 15)',
+        duration: 'random(2, 4)',
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: {
+          amount: 1,
+          from: 'random'
+        }
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
       dir="rtl"
     >
-      {/* Simple Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: '100px 100px',
-          }}
-        />
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-purple-950/20 to-black" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+          maskImage: 'radial-gradient(ellipse 80% 50% at 50% 50%, black, transparent)',
+        }} />
+      </div>
+
+      {/* Floating Orbs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="orb absolute top-1/4 right-1/4 w-72 h-72 bg-primary/30 rounded-full blur-[100px]" />
+        <div className="orb absolute top-1/3 left-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-[120px]" />
+        <div className="orb absolute bottom-1/4 right-1/3 w-80 h-80 bg-accent/25 rounded-full blur-[110px]" />
+      </div>
+
+      {/* Floating Tech Icons */}
+      <div className="floating-icon absolute top-20 right-20 opacity-10">
+        <Code2 className="w-24 h-24 text-primary" />
+      </div>
+      <div className="floating-icon absolute bottom-32 left-20 opacity-10">
+        <Zap className="w-20 h-20 text-secondary" />
+      </div>
+      <div className="floating-icon absolute top-1/3 left-1/3 opacity-10">
+        <Sparkles className="w-16 h-16 text-accent" />
       </div>
 
       <motion.div
         style={{ y, opacity }}
-        className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center py-20"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
       >
-        {/* Trust Badge */}
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-slate-900/5 dark:bg-white/5 border border-slate-900/10 dark:border-white/10"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 group cursor-pointer hover:scale-105 transition-transform"
         >
-          <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            שותפים טכנולוגיים מהימנים
+          <Sparkles className="w-4 h-4 text-primary" />
+          <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            שותפים טכנולוגיים מובילים
           </span>
+          <Zap className="w-4 h-4 text-secondary animate-pulse" />
+        </motion.div>
+
+        {/* Typing Code Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-6 inline-block"
+        >
+          <div className="glass rounded-xl p-4 border border-primary/30 shadow-2xl shadow-primary/20">
+            <code className="text-sm md:text-base font-mono text-primary">
+              {typedText}
+              <span className="animate-pulse text-secondary">|</span>
+            </code>
+          </div>
         </motion.div>
 
         {/* Main Heading */}
@@ -55,102 +142,134 @@ export const HeroHebrew = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-slate-900 dark:text-white"
+          className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight"
         >
-          פתרונות טכנולוגיים
+          <span className="inline-block">
+            <motion.span
+              className="text-gradient glow"
+              animate={{
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: 'linear'
+              }}
+              style={{
+                backgroundSize: '200% 200%',
+              }}
+            >
+              בונים לכם
+            </motion.span>
+          </span>
           <br />
-          <span className="text-blue-600 dark:text-blue-400">לעסק שלכם</span>
+          <motion.span
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="inline-block text-white"
+          >
+            את העתיד
+          </motion.span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-3xl mx-auto leading-relaxed font-light"
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-xl md:text-2xl text-gray-400 mb-4 max-w-3xl mx-auto"
         >
-          שני מפתחים מקצועיים עם ניסיון של שנים בבניית מערכות מתקדמות ואתרים מורכבים
+          שני מפתחים מקצועיים שיוצרים חוויות דיגיטליות
+          <span className="text-gradient font-semibold"> מדהימות</span>,
+          <span className="text-gradient font-semibold"> מתקדמות</span>, ו
+          <span className="text-gradient font-semibold">חדשניות</span>
         </motion.p>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-lg text-slate-500 dark:text-slate-500 mb-12"
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="text-lg text-gray-500 mb-12"
         >
           אתרים • מערכות ניהול • דשבורדים • אוטומציות
         </motion.p>
 
         {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+          transition={{ duration: 0.8, delay: 1 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 rounded-lg text-white font-semibold text-lg flex items-center gap-2 shadow-lg shadow-blue-600/20 transition-all"
+            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(99, 102, 241, 0.6)' }}
+            whileTap={{ scale: 0.95 }}
+            className="group px-10 py-5 bg-gradient-to-r from-primary to-secondary rounded-full text-white font-semibold text-lg flex items-center gap-2 hover:gap-4 transition-all relative overflow-hidden shadow-2xl shadow-primary/50"
           >
-            <span>קבעו פגישת ייעוץ</span>
-            <ArrowLeft className="w-5 h-5" />
+            <span className="relative z-10">בואו נדבר על הפרויקט</span>
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform relative z-10" />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-secondary to-accent"
+              initial={{ x: '100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
           </motion.button>
 
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="px-8 py-4 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-semibold text-lg hover:border-slate-300 dark:hover:border-slate-600 transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-10 py-5 glass rounded-full text-white font-semibold text-lg hover:bg-white/10 transition-all"
           >
-            צפו בפרויקטים
+            לראות דוגמאות עבודה
           </motion.button>
         </motion.div>
 
-        {/* Stats - Clean and Professional */}
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-12 border-t border-slate-200 dark:border-slate-800"
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="mt-20 grid grid-cols-3 gap-8 max-w-3xl mx-auto"
         >
           {[
-            { number: '50+', label: 'פרויקטים הושלמו' },
-            { number: '100%', label: 'שביעות רצון לקוחות' },
-            { number: '5+', label: 'שנות ניסיון' },
+            { number: '50+', label: 'פרויקטים' },
+            { number: '100%', label: 'שביעות רצון' },
+            { number: '24/7', label: 'תמיכה' },
           ].map((stat, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.1 + index * 0.1 }}
-              className="text-center"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 1.3 + index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="glass rounded-xl p-6 text-center hover:border-primary/50 transition-all"
             >
-              <div className="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+              <div className="text-3xl md:text-4xl font-black text-gradient mb-2">
                 {stat.number}
               </div>
-              <div className="text-sm md:text-base text-slate-600 dark:text-slate-400 font-medium">
-                {stat.label}
-              </div>
+              <div className="text-sm md:text-base text-gray-400">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Simple Scroll Indicator */}
+        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
+          transition={{ delay: 2, duration: 1 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 border-2 border-slate-300 dark:border-slate-700 rounded-full flex items-start justify-center p-2"
+            className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
           >
             <motion.div
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="w-1 h-2 bg-slate-400 dark:bg-slate-600 rounded-full"
+              className="w-1 h-2 bg-white/60 rounded-full"
             />
           </motion.div>
         </motion.div>
