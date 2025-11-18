@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Code2, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const navItems = [
   { label: 'ראשי', href: '#home' },
   { label: 'שירותים', href: '#services' },
-  { label: 'למה אנחנו', href: '#why-us' },
+  { label: 'אודות', href: '#why-us' },
   { label: 'צור קשר', href: '#contact' },
 ];
 
@@ -18,9 +18,8 @@ export const NavigationHebrew = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
 
-      // Update active section
       const sections = navItems.map(item => item.href.substring(1));
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
@@ -53,178 +52,91 @@ export const NavigationHebrew = () => {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.3 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'py-3' : 'py-5'
+          isScrolled
+            ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-lg'
+            : 'bg-transparent'
         }`}
         dir="rtl"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            animate={{
-              backgroundColor: isScrolled
-                ? theme === 'dark'
-                  ? 'rgba(15, 23, 42, 0.8)'
-                  : 'rgba(255, 255, 255, 0.8)'
-                : theme === 'dark'
-                ? 'rgba(0, 0, 0, 0.3)'
-                : 'rgba(255, 255, 255, 0.3)',
-              backdropFilter: isScrolled ? 'blur(20px)' : 'blur(10px)',
-            }}
-            className="rounded-2xl px-6 py-4 flex items-center justify-between border-2 border-gray-200/20 dark:border-slate-700/50 shadow-xl"
-          >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-3 cursor-pointer group"
+            <div
+              className="flex items-center gap-2 cursor-pointer"
               onClick={() => scrollToSection('#home')}
             >
-              <motion.div
-                animate={{
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: 'linear'
-                }}
-                className="relative"
-              >
-                <Code2 className="w-8 h-8 text-blue-600" />
-                <motion.div
-                  className="absolute inset-0 bg-blue-600 blur-lg opacity-50"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.5, 0.8, 0.5],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                  }}
-                />
-              </motion.div>
-              <span className="text-xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">C</span>
+              </div>
+              <span className="text-xl font-bold text-slate-900 dark:text-white">
                 שם החברה
               </span>
-            </motion.div>
+            </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
-              {navItems.map((item, index) => (
-                <motion.button
+              {navItems.map((item) => (
+                <button
                   key={item.href}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
                   onClick={() => scrollToSection(item.href)}
-                  className="relative px-5 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-bold rounded-xl"
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    activeSection === item.href.substring(1)
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
                 >
                   {item.label}
-
-                  {/* Active Indicator */}
-                  <AnimatePresence>
-                    {activeSection === item.href.substring(1) && (
-                      <motion.div
-                        layoutId="activeSection"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border-2 border-blue-500/30"
-                      />
-                    )}
-                  </AnimatePresence>
-                </motion.button>
+                </button>
               ))}
 
               {/* Theme Toggle */}
-              <motion.button
-                whileHover={{ scale: 1.05, rotate: 180 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={toggleTheme}
-                className="mr-4 p-3 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-2 border-blue-500/20 hover:border-blue-500/40 transition-all"
+                className="mr-2 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
-                <AnimatePresence mode="wait">
-                  {theme === 'dark' ? (
-                    <motion.div
-                      key="sun"
-                      initial={{ rotate: -180, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 180, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Sun className="w-5 h-5 text-yellow-500" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="moon"
-                      initial={{ rotate: 180, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -180, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Moon className="w-5 h-5 text-blue-600" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                ) : (
+                  <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                )}
+              </button>
 
               {/* CTA Button */}
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={() => scrollToSection('#contact')}
-                className="mr-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white font-bold shadow-lg hover:shadow-xl transition-all"
+                className="mr-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-all"
               >
-                בואו נדבר
-              </motion.button>
+                צור קשר
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="flex items-center gap-2 md:hidden">
-              {/* Theme Toggle Mobile */}
-              <motion.button
-                whileTap={{ scale: 0.9 }}
+              <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10"
+                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 {theme === 'dark' ? (
-                  <Sun className="w-5 h-5 text-yellow-500" />
+                  <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 ) : (
-                  <Moon className="w-5 h-5 text-blue-600" />
+                  <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 )}
-              </motion.button>
+              </button>
 
-              <motion.button
-                whileTap={{ scale: 0.9 }}
+              <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-gray-700 dark:text-gray-300"
+                className="p-2 text-slate-600 dark:text-slate-400"
               >
-                <AnimatePresence mode="wait">
-                  {isMobileMenuOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X className="w-6 h-6" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Menu className="w-6 h-6" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </motion.nav>
 
@@ -232,49 +144,40 @@ export const NavigationHebrew = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
             />
 
-            {/* Menu Panel */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-80 bg-white dark:bg-slate-900 border-r-2 border-gray-200 dark:border-slate-700 z-50 md:hidden shadow-2xl"
+              transition={{ type: 'tween', duration: 0.3 }}
+              className="fixed top-0 left-0 bottom-0 w-64 bg-white dark:bg-slate-900 shadow-2xl z-50 md:hidden"
               dir="rtl"
             >
-              <div className="p-8 pt-24">
-                <nav className="space-y-4">
-                  {navItems.map((item, index) => (
-                    <motion.button
+              <div className="p-6 pt-20">
+                <nav className="space-y-2">
+                  {navItems.map((item) => (
+                    <button
                       key={item.href}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
                       onClick={() => scrollToSection(item.href)}
-                      className="block w-full text-right text-2xl font-bold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-3 px-4 rounded-xl hover:bg-blue-50 dark:hover:bg-slate-800"
+                      className="block w-full text-right px-4 py-3 text-lg font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                     >
                       {item.label}
-                    </motion.button>
+                    </button>
                   ))}
 
-                  <motion.button
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: navItems.length * 0.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={() => scrollToSection('#contact')}
-                    className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white font-bold mt-8 shadow-lg"
+                    className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold mt-4"
                   >
-                    בואו נדבר
-                  </motion.button>
+                    צור קשר
+                  </button>
                 </nav>
               </div>
             </motion.div>

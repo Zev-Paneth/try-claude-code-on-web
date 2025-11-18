@@ -21,13 +21,8 @@ export const ContactHebrew = () => {
     setIsSubmitting(true);
 
     // כאן תוסיף את הקריאה לבאקאנד שלך
-    // לדוגמה:
-    // await fetch('/api/contact', {
-    //   method: 'POST',
-    //   body: JSON.stringify(formData)
-    // });
+    // await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) });
 
-    // סימולציה של שליחה
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -48,58 +43,43 @@ export const ContactHebrew = () => {
   return (
     <section
       ref={ref}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-slate-50 dark:bg-slate-950"
+      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-white dark:bg-slate-900"
       dir="rtl"
       id="contact"
     >
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-[120px]" />
-      </div>
-
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6 }}
-            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 mb-8"
-          >
-            <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              צור קשר
-            </span>
-          </motion.div>
+          <p className="text-blue-600 dark:text-blue-400 font-semibold mb-4 text-sm uppercase tracking-wide">
+            צור קשר
+          </p>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 text-gray-900 dark:text-white">
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              בואו נדבר על הפרויקט
-            </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
+            בואו נדבר על הפרויקט
           </h2>
 
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            מלאו את הטופס ונחזור אליכם תוך 24 שעות
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+            נשמח לשמוע עליכם ולהבין כיצד נוכל לסייע
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Info */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             className="space-y-8"
           >
             <div>
-              <h3 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">פרטי התקשרות</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-                אנחנו זמינים בכל ערוצי התקשורת. בחרו את הדרך הנוחה לכם ביותר ליצירת קשר.
+              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">פרטי התקשרות</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                ניתן ליצור קשר בכל דרך שנוחה לכם. נחזור אליכם בהקדם האפשרי.
               </p>
             </div>
 
@@ -108,258 +88,143 @@ export const ContactHebrew = () => {
                 icon: Phone,
                 title: 'טלפון',
                 value: '050-123-4567',
-                gradient: 'from-green-400 to-emerald-400',
               },
               {
                 icon: Mail,
                 title: 'אימייל',
                 value: 'hello@yourcompany.com',
-                gradient: 'from-blue-400 to-cyan-400',
               },
               {
                 icon: MapPin,
                 title: 'מיקום',
                 value: 'תל אביב, ישראל',
-                gradient: 'from-purple-400 to-pink-400',
               }
             ].map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -30 }}
+                initial={{ opacity: 0, x: -20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                whileHover={{ x: 10, scale: 1.02 }}
-                className="flex items-center gap-5 p-6 rounded-2xl bg-white dark:bg-slate-900 border-2 border-gray-200 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
+                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                className="flex items-center gap-4 p-4 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
               >
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.gradient} p-3 flex items-center justify-center shadow-lg`}
-                >
-                  <item.icon className="w-full h-full text-white" />
-                </motion.div>
+                <div className="w-12 h-12 rounded-lg bg-blue-600/10 dark:bg-blue-600/20 flex items-center justify-center">
+                  <item.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
 
                 <div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{item.title}</div>
-                  <div className="text-xl font-bold text-gray-900 dark:text-white">{item.value}</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{item.title}</div>
+                  <div className="text-lg font-semibold text-slate-900 dark:text-white">{item.value}</div>
                 </div>
               </motion.div>
             ))}
-
-            {/* Social proof */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="p-8 rounded-2xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-2 border-blue-500/20"
-            >
-              <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4">
-                <span className="text-2xl">💡</span> <strong>טיפ:</strong> ככל שתספרו לנו יותר על הפרויקט, כך נוכל לתת לכם הערכת מחיר מדויקת יותר!
-              </p>
-            </motion.div>
           </motion.div>
 
           {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
-              <FormField
-                name="name"
-                label="שם מלא"
-                placeholder="איך קוראים לכם?"
-                value={formData.name}
-                onChange={handleChange}
-                isFocused={focusedField === 'name'}
-                onFocus={() => setFocusedField('name')}
-                onBlur={() => setFocusedField(null)}
-                required
-              />
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  שם מלא <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none transition-colors"
+                  placeholder="איך קוראים לכם?"
+                />
+              </div>
 
               {/* Phone Field */}
-              <FormField
-                name="phone"
-                label="טלפון"
-                type="tel"
-                placeholder="050-123-4567"
-                value={formData.phone}
-                onChange={handleChange}
-                isFocused={focusedField === 'phone'}
-                onFocus={() => setFocusedField('phone')}
-                onBlur={() => setFocusedField(null)}
-                required
-              />
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  טלפון <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none transition-colors"
+                  placeholder="050-123-4567"
+                />
+              </div>
 
               {/* Email Field */}
-              <FormField
-                name="email"
-                label="אימייל"
-                type="email"
-                placeholder="name@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                isFocused={focusedField === 'email'}
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                required
-              />
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  אימייל <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none transition-colors"
+                  placeholder="name@example.com"
+                />
+              </div>
 
               {/* Message Field */}
-              <div className="relative">
-                <motion.label
-                  animate={{
-                    y: focusedField === 'message' || formData.message ? -30 : 0,
-                    scale: focusedField === 'message' || formData.message ? 0.85 : 1,
-                    color: focusedField === 'message' ? '#6366f1' : '#6b7280'
-                  }}
-                  className="absolute right-4 top-4 font-bold pointer-events-none origin-right text-gray-600 dark:text-gray-400"
-                >
-                  ספרו לנו על הפרויקט
-                </motion.label>
-
-                <motion.textarea
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  הודעה <span className="text-red-500">*</span>
+                </label>
+                <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  onFocus={() => setFocusedField('message')}
-                  onBlur={() => setFocusedField(null)}
-                  rows={5}
                   required
-                  className="w-full px-6 pt-12 pb-4 bg-white dark:bg-slate-900 border-2 border-gray-300 dark:border-slate-700 rounded-2xl text-gray-900 dark:text-white placeholder-transparent focus:outline-none resize-none transition-all"
+                  rows={5}
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none resize-none transition-colors"
                   placeholder="ספרו לנו על הפרויקט שלכם..."
-                  animate={{
-                    borderColor: focusedField === 'message' ? '#6366f1' : 'rgb(209 213 219)'
-                  }}
                 />
               </div>
 
               {/* Submit Button */}
-              <motion.button
+              <button
                 type="submit"
                 disabled={isSubmitting || isSubmitted}
-                whileHover={{ scale: isSubmitted ? 1 : 1.02 }}
-                whileTap={{ scale: isSubmitted ? 1 : 0.98 }}
-                className={`w-full py-5 rounded-2xl font-bold text-xl flex items-center justify-center gap-3 relative overflow-hidden transition-all ${
+                className={`w-full py-4 rounded-lg font-semibold text-lg flex items-center justify-center gap-2 transition-all ${
                   isSubmitted
-                    ? 'bg-green-500 shadow-2xl shadow-green-500/50'
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 shadow-2xl shadow-blue-500/50 hover:shadow-purple-500/50'
-                }`}
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-blue-600 hover:bg-blue-700'
+                } text-white shadow-lg disabled:opacity-70`}
               >
-                <motion.div
-                  animate={{
-                    opacity: isSubmitted ? 0 : 1,
-                    y: isSubmitted ? 20 : 0
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center gap-3 text-white"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        className="w-6 h-6 border-3 border-white border-t-transparent rounded-full"
-                      />
-                      <span>שולח...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span>שלחו את הפרטים</span>
-                      <Send className="w-6 h-6" />
-                    </>
-                  )}
-                </motion.div>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>שולח...</span>
+                  </>
+                ) : isSubmitted ? (
+                  <>
+                    <Check className="w-6 h-6" />
+                    <span>נשלח בהצלחה!</span>
+                  </>
+                ) : (
+                  <>
+                    <span>שלחו הודעה</span>
+                    <Send className="w-5 h-5" />
+                  </>
+                )}
+              </button>
 
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{
-                    opacity: isSubmitted ? 1 : 0,
-                    y: isSubmitted ? 0 : -20
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 flex items-center justify-center gap-3 text-white"
-                >
-                  <Check className="w-7 h-7" />
-                  <span>נשלח בהצלחה!</span>
-                </motion.div>
-              </motion.button>
-
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                נחזור אליכם תוך 24 שעות ⚡
+              <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+                נחזור אליכם תוך 24 שעות
               </p>
             </form>
           </motion.div>
         </div>
       </div>
     </section>
-  );
-};
-
-interface FormFieldProps {
-  name: string;
-  label: string;
-  type?: string;
-  placeholder: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  isFocused: boolean;
-  onFocus: () => void;
-  onBlur: () => void;
-  required?: boolean;
-}
-
-const FormField = ({
-  name,
-  label,
-  type = 'text',
-  placeholder,
-  value,
-  onChange,
-  isFocused,
-  onFocus,
-  onBlur,
-  required
-}: FormFieldProps) => {
-  return (
-    <div className="relative">
-      <motion.label
-        animate={{
-          y: isFocused || value ? -30 : 0,
-          scale: isFocused || value ? 0.85 : 1,
-          color: isFocused ? '#6366f1' : '#6b7280'
-        }}
-        transition={{ duration: 0.2 }}
-        className="absolute right-4 top-4 font-bold pointer-events-none origin-right text-gray-600 dark:text-gray-400"
-      >
-        {label} {required && <span className="text-red-500">*</span>}
-      </motion.label>
-
-      <motion.input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        required={required}
-        className="w-full px-6 pt-8 pb-4 bg-white dark:bg-slate-900 border-2 border-gray-300 dark:border-slate-700 rounded-2xl text-gray-900 dark:text-white placeholder-transparent focus:outline-none transition-all"
-        placeholder={placeholder}
-        animate={{
-          borderColor: isFocused ? '#6366f1' : 'rgb(209 213 219)'
-        }}
-        transition={{ duration: 0.2 }}
-      />
-
-      {/* Animated underline */}
-      <motion.div
-        className="absolute bottom-0 right-0 h-0.5 bg-gradient-to-l from-blue-500 to-purple-500"
-        initial={{ width: 0 }}
-        animate={{ width: isFocused ? '100%' : 0 }}
-        transition={{ duration: 0.3 }}
-      />
-    </div>
   );
 };

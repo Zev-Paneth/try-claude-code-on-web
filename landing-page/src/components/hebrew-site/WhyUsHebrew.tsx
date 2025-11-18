@@ -5,35 +5,23 @@ import { DollarSign, Award, Heart, Rocket } from 'lucide-react';
 const reasons = [
   {
     icon: DollarSign,
-    title: 'מחירים גמישים ונגישים',
-    description: 'אנחנו מבינים שכל עסק שונה. לכן אנחנו מציעים מחירים הוגנים ותכניות תשלום גמישות שמתאימות לכל תקציב',
-    stats: 'החל מ-₪3,000',
-    gradient: 'from-green-400 via-emerald-400 to-teal-400',
-    bgGradient: 'from-green-500/10 via-emerald-500/10 to-teal-500/10',
+    title: 'מחירים הוגנים',
+    description: 'מחירים תחרותיים ושקופים ללא עלויות נסתרות. אנו מציעים תכניות תשלום גמישות המתאימות לכל גודל עסק.',
   },
   {
     icon: Award,
-    title: 'מקצוענות ללא פשרות',
-    description: 'קוד נקי, טכנולוגיות מתקדמות, ובדיקות קפדניות. אנחנו לא מתפשרים על איכות - ואתם מקבלים מוצר מושלם',
-    stats: '100% שביעות רצון',
-    gradient: 'from-blue-400 via-indigo-400 to-purple-400',
-    bgGradient: 'from-blue-500/10 via-indigo-500/10 to-purple-500/10',
+    title: 'מקצוענות מוכחת',
+    description: 'צוות מפתחים מנוסים עם ניסיון מוכח בפרויקטים מורכבים. אנו מחויבים לסטנדרטים הגבוהים ביותר של איכות.',
   },
   {
     icon: Heart,
-    title: 'יחס אישי לכל לקוח',
-    description: 'אתם לא סתם מספר אצלנו. אנחנו מקשיבים, מבינים את הצרכים, ונותנים מענה מהיר ואישי לאורך כל הדרך',
-    stats: 'זמינות 24/7',
-    gradient: 'from-pink-400 via-rose-400 to-red-400',
-    bgGradient: 'from-pink-500/10 via-rose-500/10 to-red-500/10',
+    title: 'שירות אישי',
+    description: 'תמיכה ייעודית לכל לקוח לאורך כל הפרויקט. אנו זמינים לשאלות, בקשות ועדכונים בכל שלב.',
   },
   {
     icon: Rocket,
-    title: 'טכנולוגיות מתקדמות',
-    description: 'React, Node.js, AI, Cloud - אנחנו עובדים עם הכלים החדשים והטובים ביותר כדי לתת לכם יתרון תחרותי',
-    stats: 'טכנולוגיות 2024',
-    gradient: 'from-orange-400 via-amber-400 to-yellow-400',
-    bgGradient: 'from-orange-500/10 via-amber-500/10 to-yellow-500/10',
+    title: 'טכנולוגיות מובילות',
+    description: 'שימוש בכלים והטכנולוגיות המתקדמות ביותר בשוק. אנו מעדכנים את הידע שלנו באופן שוטף.',
   },
 ];
 
@@ -44,62 +32,27 @@ export const WhyUsHebrew = () => {
   return (
     <section
       ref={ref}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white dark:bg-black"
+      className="relative py-24 px-6 sm:px-8 lg:px-12 bg-slate-50 dark:bg-slate-950"
       dir="rtl"
     >
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(99,102,241,0.1),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(236,72,153,0.1),transparent_50%)]" />
-
-        {/* Animated Grid */}
-        <motion.div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(99, 102, 241, 0.2) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(99, 102, 241, 0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: '80px 80px',
-          }}
-          animate={{
-            backgroundPosition: ['0px 0px', '80px 80px'],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear'
-          }}
-        />
-      </div>
-
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6 }}
-            className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 mb-8"
-          >
-            <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              למה דווקא אנחנו?
-            </span>
-          </motion.div>
+          <p className="text-blue-600 dark:text-blue-400 font-semibold mb-4 text-sm uppercase tracking-wide">
+            היתרונות שלנו
+          </p>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 text-gray-900 dark:text-white">
-            <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
-              ארבע סיבות לבחור בנו
-            </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
+            למה לבחור בנו
           </h2>
 
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            אנחנו לא עוד חברת פיתוח - אנחנו השותפים שלכם להצלחה
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+            אנחנו לא רק מפתחים - אנחנו שותפים להצלחה העסקית שלכם
           </p>
         </motion.div>
 
@@ -115,22 +68,23 @@ export const WhyUsHebrew = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
+        {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-20 text-center"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-16 text-center"
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block"
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
+            מוכנים להתחיל?
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold text-lg shadow-lg shadow-blue-600/20 transition-all"
           >
-            <button className="px-12 py-6 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-2xl text-white text-xl font-bold shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 transition-all">
-              בואו נתחיל לעבוד ביחד!
-            </button>
-          </motion.div>
+            צרו קשר עכשיו
+          </motion.button>
         </motion.div>
       </div>
     </section>
@@ -148,116 +102,26 @@ const ReasonCard = ({ reason, index, isInView }: ReasonCardProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, rotateX: -15 }}
-      animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.15 }}
-      whileHover={{ y: -15, scale: 1.03 }}
-      style={{ transformStyle: 'preserve-3d' }}
-      className="group relative"
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
     >
-      {/* Card */}
-      <div className={`relative bg-gradient-to-br ${reason.bgGradient} dark:from-slate-900 dark:to-slate-800 rounded-3xl p-10 h-full border-2 border-gray-200 dark:border-slate-700 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden`}>
-
-        {/* Animated Background Gradient */}
-        <motion.div
-          className={`absolute inset-0 bg-gradient-to-br ${reason.gradient} opacity-0 group-hover:opacity-20 dark:group-hover:opacity-30 transition-opacity duration-700`}
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10">
-          {/* Icon with Animation */}
-          <motion.div
-            className="relative mb-6"
-            animate={{
-              y: [0, -10, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: index * 0.2
-            }}
-          >
-            <motion.div
-              whileHover={{ rotate: 360, scale: 1.2 }}
-              transition={{ duration: 0.8 }}
-              className={`inline-flex p-5 rounded-2xl bg-gradient-to-br ${reason.gradient} shadow-lg`}
-            >
-              <Icon className="w-10 h-10 text-white" />
-            </motion.div>
-
-            {/* Floating particles around icon */}
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className={`absolute w-2 h-2 rounded-full bg-gradient-to-r ${reason.gradient}`}
-                animate={{
-                  x: [0, Math.cos(i * 120 * Math.PI / 180) * 40, 0],
-                  y: [0, Math.sin(i * 120 * Math.PI / 180) * 40, 0],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.3 + index * 0.2,
-                  ease: 'easeInOut'
-                }}
-                style={{
-                  top: '50%',
-                  left: '50%',
-                }}
-              />
-            ))}
-          </motion.div>
-
-          {/* Title */}
-          <h3 className="text-3xl md:text-4xl font-black mb-4 text-gray-900 dark:text-white">
-            {reason.title}
-          </h3>
-
-          {/* Description */}
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6 text-lg">
-            {reason.description}
-          </p>
-
-          {/* Stats Badge */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className={`inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r ${reason.gradient} shadow-lg`}
-          >
-            <span className="text-white font-bold text-lg">{reason.stats}</span>
-          </motion.div>
+      <div className="h-full p-8 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-600 transition-all">
+        {/* Icon */}
+        <div className="w-14 h-14 rounded-lg bg-blue-600/10 dark:bg-blue-600/20 flex items-center justify-center mb-6">
+          <Icon className="w-7 h-7 text-blue-600 dark:text-blue-400" />
         </div>
 
-        {/* Decorative Corner Elements */}
-        <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${reason.gradient} rounded-full opacity-20 blur-3xl group-hover:opacity-40 transition-opacity`} />
-        <div className={`absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-tl ${reason.gradient} rounded-full opacity-20 blur-3xl group-hover:opacity-40 transition-opacity`} />
+        {/* Content */}
+        <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-white">
+          {reason.title}
+        </h3>
 
-        {/* Animated Border */}
-        <motion.div
-          className="absolute inset-0 rounded-3xl"
-          style={{
-            background: `linear-gradient(135deg, transparent 0%, ${reason.gradient} 50%, transparent 100%)`,
-            opacity: 0,
-          }}
-          whileHover={{
-            opacity: 0.2,
-          }}
-          transition={{ duration: 0.5 }}
-        />
+        <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+          {reason.description}
+        </p>
       </div>
-
-      {/* Shadow Effect */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${reason.gradient} opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500 -z-10`} />
     </motion.div>
   );
 };
