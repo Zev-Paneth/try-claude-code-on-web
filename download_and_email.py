@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """
 Script to download media (images/videos) from URL and send via email.
+Uses yt-dlp for robust downloading from many websites.
 """
 
 import sys
 import os
 import argparse
-import requests
+import tempfile
 import smtplib
+import glob
+import yt_dlp
+import requests
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
-from urllib.parse import urlparse, unquote
 
 # Configuration
 GMAIL_ADDRESS = "zevpaneth@gmail.com"
@@ -25,103 +28,120 @@ MAX_FILE_SIZE = 25 * 1024 * 1024
 
 # Supported media types
 SUPPORTED_IMAGES = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
-SUPPORTED_VIDEOS = {'.mp4', '.webm', '.mov', '.avi'}
+SUPPORTED_VIDEOS = {'.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'}
 SUPPORTED_MEDIA = SUPPORTED_IMAGES | SUPPORTED_VIDEOS
 
-# Content-Type mappings
-MEDIA_CONTENT_TYPES = {
-    'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-    'video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo',
-    'application/octet-stream'  # Sometimes used for binary files
-}
 
-# User-Agent to bypass 403 blocks
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Accept': '*/*',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Referer': 'https://www.google.com/'
-}
+def is_direct_media_url(url: str) -> bool:
+    """Check if URL is a direct link to a media file."""
+    lower_url = url.lower().split('?')[0]  # Remove query params
+    return any(lower_url.endswith(ext) for ext in SUPPORTED_MEDIA)
 
 
-def get_filename_from_url(url: str, content_type: str = None) -> str:
-    """Extract filename from URL or generate one based on content type."""
-    parsed = urlparse(url)
-    path = unquote(parsed.path)
-    filename = os.path.basename(path)
+def download_with_requests(url: str, temp_dir: str) -> str:
+    """Download direct media files using requests."""
+    print("📥 מוריד קובץ ישיר...")
 
-    # If no extension, try to add one based on content type
-    if filename and '.' not in filename and content_type:
-        ext_map = {
-            'image/jpeg': '.jpg',
-            'image/png': '.png',
-            'image/gif': '.gif',
-            'image/webp': '.webp',
-            'video/mp4': '.mp4',
-            'video/webm': '.webm',
-            'video/quicktime': '.mov',
-            'video/x-msvideo': '.avi',
-        }
-        ext = ext_map.get(content_type.split(';')[0].strip(), '')
-        filename += ext
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://www.google.com/'
+    }
 
-    # Default filename if none found
+    response = requests.get(url, headers=headers, stream=True, timeout=60)
+    response.raise_for_status()
+
+    # Get filename from URL
+    filename = os.path.basename(url.split('?')[0])
     if not filename:
-        filename = 'downloaded_media'
-        if content_type and 'video' in content_type:
-            filename += '.mp4'
-        else:
-            filename += '.jpg'
+        filename = 'media.jpg'
 
-    return filename
+    filepath = os.path.join(temp_dir, filename)
+
+    with open(filepath, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            f.write(chunk)
+
+    return filepath
 
 
-def download_file(url: str) -> tuple[bytes, str, str]:
-    """
-    Download file from URL.
-    Returns: (file_content, filename, content_type)
-    """
-    print(f"מוריד מ: {url}")
+def download_with_ytdlp(url: str, temp_dir: str) -> str:
+    """Download media using yt-dlp (supports many websites)."""
+    print("📥 מוריד באמצעות yt-dlp...")
+
+    # yt-dlp options
+    ydl_opts = {
+        'outtmpl': os.path.join(temp_dir, '%(title)s.%(ext)s'),
+        'format': 'best[filesize<25M]/best',  # Prefer files under 25MB
+        'quiet': False,
+        'no_warnings': False,
+        'extract_flat': False,
+        # Limit file size for Gmail
+        'max_filesize': MAX_FILE_SIZE,
+    }
 
     try:
-        response = requests.get(url, headers=HEADERS, stream=True, timeout=60)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"שגיאה בהורדה: {e}")
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
 
-    content_type = response.headers.get('Content-Type', 'application/octet-stream')
-    content_type_base = content_type.split(';')[0].strip().lower()
+            # Find the downloaded file
+            if info:
+                # Try to get the filename from info
+                if 'requested_downloads' in info:
+                    filepath = info['requested_downloads'][0]['filepath']
+                else:
+                    # Search for downloaded file in temp dir
+                    files = glob.glob(os.path.join(temp_dir, '*'))
+                    if files:
+                        filepath = max(files, key=os.path.getctime)
+                    else:
+                        raise Exception("לא נמצא קובץ שהורד")
 
-    # Check if it's media content
-    if content_type_base not in MEDIA_CONTENT_TYPES:
-        print(f"⚠️  אזהרה: סוג התוכן ({content_type_base}) לא נראה כמדיה!")
-        print("   ממשיך בכל זאת...")
+                return filepath
+            else:
+                raise Exception("yt-dlp לא הצליח לחלץ מידע")
 
-    # Get the content
-    content = response.content
-    file_size = len(content)
+    except yt_dlp.utils.DownloadError as e:
+        raise Exception(f"שגיאת הורדה: {e}")
 
-    print(f"גודל הקובץ: {file_size / (1024*1024):.2f} MB")
 
-    # Check file size
-    if file_size > MAX_FILE_SIZE:
-        raise Exception(f"❌ הקובץ גדול מדי! ({file_size / (1024*1024):.2f} MB > 25 MB)\n   Gmail מגביל קבצים מצורפים ל-25MB.")
+def download_file(url: str) -> tuple[bytes, str]:
+    """
+    Download file from URL using the best method.
+    Returns: (file_content, filename)
+    """
+    print(f"🔗 URL: {url}\n")
 
-    filename = get_filename_from_url(url, content_type)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Choose download method
+        if is_direct_media_url(url):
+            filepath = download_with_requests(url, temp_dir)
+        else:
+            # Use yt-dlp for complex URLs (YouTube, Twitter, Instagram, etc.)
+            filepath = download_with_ytdlp(url, temp_dir)
 
-    # Verify extension is supported
-    ext = os.path.splitext(filename)[1].lower()
-    if ext and ext not in SUPPORTED_MEDIA:
-        print(f"⚠️  אזהרה: סיומת הקובץ ({ext}) לא ברשימת המדיה הנתמכת!")
+        # Read the file
+        filename = os.path.basename(filepath)
+        file_size = os.path.getsize(filepath)
 
-    print(f"שם הקובץ: {filename}")
+        print(f"\n📁 שם הקובץ: {filename}")
+        print(f"📊 גודל: {file_size / (1024*1024):.2f} MB")
 
-    return content, filename, content_type
+        # Check file size
+        if file_size > MAX_FILE_SIZE:
+            raise Exception(
+                f"❌ הקובץ גדול מדי! ({file_size / (1024*1024):.2f} MB > 25 MB)\n"
+                "   Gmail מגביל קבצים מצורפים ל-25MB."
+            )
+
+        with open(filepath, 'rb') as f:
+            content = f.read()
+
+        return content, filename
 
 
 def send_email(file_content: bytes, filename: str, source_url: str):
     """Send email with file attachment."""
-    print(f"\nשולח אימייל ל: {GMAIL_ADDRESS}")
+    print(f"\n📧 שולח אימייל ל: {GMAIL_ADDRESS}")
 
     # Create message
     msg = MIMEMultipart()
@@ -134,6 +154,7 @@ def send_email(file_content: bytes, filename: str, source_url: str):
 {source_url}
 
 שם הקובץ: {filename}
+גודל: {len(file_content) / (1024*1024):.2f} MB
 """
     msg.attach(MIMEText(body, 'plain', 'utf-8'))
 
@@ -162,7 +183,7 @@ def send_email(file_content: bytes, filename: str, source_url: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='הורדת מדיה מ-URL ושליחה למייל'
+        description='הורדת מדיה מ-URL ושליחה למייל (תומך ב-YouTube, Twitter, Instagram ועוד)'
     )
     parser.add_argument(
         'url',
@@ -188,7 +209,7 @@ def main():
 
     try:
         # Download file
-        file_content, filename, content_type = download_file(url)
+        file_content, filename = download_file(url)
 
         # Send email
         send_email(file_content, filename, url)
