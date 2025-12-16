@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 """
 Script to download media (images/videos) from URL and send via email.
-Uses yt-dlp with browser impersonation for maximum compatibility.
+Uses yt-dlp with browser impersonation and proxy support.
 
 Requirements:
-    pip install yt-dlp requests curl_cffi
+    pip install yt-dlp requests 'curl_cffi>=0.10,<0.14'
+
+Usage:
+    # Without proxy (from home computer)
+    python download_and_email.py "https://youtube.com/watch?v=..."
+
+    # With proxy (from cloud)
+    python download_and_email.py --proxy "http://user:pass@proxy.com:port" "URL"
+
+    # Or set environment variable
+    export PROXY_URL="http://user:pass@proxy.com:port"
+    python download_and_email.py "URL"
 """
 
 import sys
@@ -20,11 +31,24 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
 
-# Configuration
+# ============================================
+# CONFIGURATION - Edit these values
+# ============================================
+
 GMAIL_ADDRESS = "zevpaneth@gmail.com"
 GMAIL_APP_PASSWORD = "jynnevfnmgrffaaw"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
+
+# Proxy configuration (optional)
+# Set here or use --proxy argument or PROXY_URL environment variable
+# Examples:
+#   - Bright Data: "http://username:password@brd.superproxy.io:22225"
+#   - IPRoyal: "http://username:password@geo.iproyal.com:12321"
+#   - Oxylabs: "http://username:password@pr.oxylabs.io:7777"
+PROXY_URL = os.environ.get('PROXY_URL', '')
+
+# ============================================
 
 # Gmail attachment size limit (25MB)
 MAX_FILE_SIZE = 25 * 1024 * 1024
@@ -34,8 +58,8 @@ SUPPORTED_IMAGES = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
 SUPPORTED_VIDEOS = {'.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'}
 SUPPORTED_MEDIA = SUPPORTED_IMAGES | SUPPORTED_VIDEOS
 
-# Browser impersonation targets (ordered by preference)
-IMPERSONATE_TARGETS = ['chrome', 'chrome110', 'firefox', 'safari']
+# Browser impersonation targets
+IMPERSONATE_TARGETS = ['chrome', 'firefox', 'safari']
 
 
 def is_direct_media_url(url: str) -> bool:
@@ -44,14 +68,21 @@ def is_direct_media_url(url: str) -> bool:
     return any(lower_url.endswith(ext) for ext in SUPPORTED_MEDIA)
 
 
-def download_with_requests(url: str, temp_dir: str) -> str:
+def download_with_requests(url: str, temp_dir: str, proxy: str = None) -> str:
     """Download direct media files using requests with curl_cffi."""
     print("📥 מוריד קובץ ישיר...")
+
+    proxies = {'http': proxy, 'https': proxy} if proxy else None
 
     # Try using curl_cffi for better compatibility
     try:
         from curl_cffi import requests as curl_requests
-        response = curl_requests.get(url, impersonate="chrome", timeout=60)
+        response = curl_requests.get(
+            url,
+            impersonate="chrome",
+            timeout=60,
+            proxies=proxies
+        )
         response.raise_for_status()
         content = response.content
     except ImportError:
@@ -60,7 +91,13 @@ def download_with_requests(url: str, temp_dir: str) -> str:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
             'Referer': 'https://www.google.com/'
         }
-        response = requests.get(url, headers=headers, stream=True, timeout=60)
+        response = requests.get(
+            url,
+            headers=headers,
+            stream=True,
+            timeout=60,
+            proxies=proxies
+        )
         response.raise_for_status()
         content = response.content
 
@@ -77,9 +114,12 @@ def download_with_requests(url: str, temp_dir: str) -> str:
     return filepath
 
 
-def download_with_ytdlp(url: str, temp_dir: str) -> str:
-    """Download media using yt-dlp with browser impersonation."""
-    print("📥 מוריד באמצעות yt-dlp (עם התחזות לדפדפן)...")
+def download_with_ytdlp(url: str, temp_dir: str, proxy: str = None) -> str:
+    """Download media using yt-dlp with browser impersonation and proxy."""
+    if proxy:
+        print(f"📥 מוריד באמצעות yt-dlp (עם proxy + התחזות לדפדפן)...")
+    else:
+        print("📥 מוריד באמצעות yt-dlp (עם התחזות לדפדפן)...")
 
     # Base yt-dlp options
     ydl_opts = {
@@ -90,9 +130,12 @@ def download_with_ytdlp(url: str, temp_dir: str) -> str:
         'extract_flat': False,
         'max_filesize': MAX_FILE_SIZE,
         'nocheckcertificate': True,
-        # Browser impersonation - this is the key!
         'impersonate': 'chrome',
     }
+
+    # Add proxy if specified
+    if proxy:
+        ydl_opts['proxy'] = proxy
 
     last_error = None
 
@@ -154,18 +197,23 @@ def download_with_ytdlp(url: str, temp_dir: str) -> str:
     raise Exception(f"שגיאת הורדה: {last_error}")
 
 
-def download_file(url: str) -> tuple[bytes, str]:
+def download_file(url: str, proxy: str = None) -> tuple[bytes, str]:
     """
     Download file from URL using the best method.
     Returns: (file_content, filename)
     """
-    print(f"🔗 URL: {url}\n")
+    print(f"🔗 URL: {url}")
+    if proxy:
+        # Hide password in output
+        display_proxy = proxy.split('@')[-1] if '@' in proxy else proxy
+        print(f"🌐 Proxy: {display_proxy}")
+    print()
 
     with tempfile.TemporaryDirectory() as temp_dir:
         if is_direct_media_url(url):
-            filepath = download_with_requests(url, temp_dir)
+            filepath = download_with_requests(url, temp_dir, proxy)
         else:
-            filepath = download_with_ytdlp(url, temp_dir)
+            filepath = download_with_ytdlp(url, temp_dir, proxy)
 
         filename = os.path.basename(filepath)
         file_size = os.path.getsize(filepath)
@@ -225,15 +273,37 @@ def send_email(file_content: bytes, filename: str, source_url: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='הורדת מדיה מ-URL ושליחה למייל (תומך ב-YouTube, Twitter, Instagram ועוד)'
+        description='הורדת מדיה מ-URL ושליחה למייל (תומך ב-YouTube, Twitter, Instagram ועוד)',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Proxy Examples:
+  Bright Data:  http://user:pass@brd.superproxy.io:22225
+  IPRoyal:      http://user:pass@geo.iproyal.com:12321
+  Oxylabs:      http://user:pass@pr.oxylabs.io:7777
+
+Environment Variable:
+  export PROXY_URL="http://user:pass@proxy.com:port"
+        """
     )
     parser.add_argument(
         'url',
         nargs='?',
         help='URL של התמונה או הסרטון'
     )
+    parser.add_argument(
+        '--proxy', '-p',
+        help='Residential proxy URL (e.g., http://user:pass@proxy.com:port)'
+    )
+    parser.add_argument(
+        '--no-email',
+        action='store_true',
+        help='רק להוריד, בלי לשלוח מייל'
+    )
 
     args = parser.parse_args()
+
+    # Get proxy from argument, config, or environment
+    proxy = args.proxy or PROXY_URL or None
 
     url = args.url
     if not url:
@@ -248,8 +318,16 @@ def main():
         sys.exit(1)
 
     try:
-        file_content, filename = download_file(url)
-        send_email(file_content, filename, url)
+        file_content, filename = download_file(url, proxy)
+
+        if args.no_email:
+            # Save locally instead
+            with open(filename, 'wb') as f:
+                f.write(file_content)
+            print(f"\n💾 הקובץ נשמר: {filename}")
+        else:
+            send_email(file_content, filename, url)
+
         print("\n🎉 הפעולה הושלמה בהצלחה!")
 
     except Exception as e:
