@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
 Script to download media (images/videos) from URL and send via email.
-Uses yt-dlp for robust downloading from many websites.
+Uses yt-dlp with browser impersonation for maximum compatibility.
+
+Requirements:
+    pip install yt-dlp requests curl_cffi
 """
 
 import sys
@@ -31,24 +34,35 @@ SUPPORTED_IMAGES = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
 SUPPORTED_VIDEOS = {'.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'}
 SUPPORTED_MEDIA = SUPPORTED_IMAGES | SUPPORTED_VIDEOS
 
+# Browser impersonation targets (ordered by preference)
+IMPERSONATE_TARGETS = ['chrome', 'chrome110', 'firefox', 'safari']
+
 
 def is_direct_media_url(url: str) -> bool:
     """Check if URL is a direct link to a media file."""
-    lower_url = url.lower().split('?')[0]  # Remove query params
+    lower_url = url.lower().split('?')[0]
     return any(lower_url.endswith(ext) for ext in SUPPORTED_MEDIA)
 
 
 def download_with_requests(url: str, temp_dir: str) -> str:
-    """Download direct media files using requests."""
+    """Download direct media files using requests with curl_cffi."""
     print("📥 מוריד קובץ ישיר...")
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
-        'Referer': 'https://www.google.com/'
-    }
-
-    response = requests.get(url, headers=headers, stream=True, timeout=60)
-    response.raise_for_status()
+    # Try using curl_cffi for better compatibility
+    try:
+        from curl_cffi import requests as curl_requests
+        response = curl_requests.get(url, impersonate="chrome", timeout=60)
+        response.raise_for_status()
+        content = response.content
+    except ImportError:
+        # Fallback to regular requests
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+            'Referer': 'https://www.google.com/'
+        }
+        response = requests.get(url, headers=headers, stream=True, timeout=60)
+        response.raise_for_status()
+        content = response.content
 
     # Get filename from URL
     filename = os.path.basename(url.split('?')[0])
@@ -58,38 +72,74 @@ def download_with_requests(url: str, temp_dir: str) -> str:
     filepath = os.path.join(temp_dir, filename)
 
     with open(filepath, 'wb') as f:
-        for chunk in response.iter_content(chunk_size=8192):
-            f.write(chunk)
+        f.write(content)
 
     return filepath
 
 
 def download_with_ytdlp(url: str, temp_dir: str) -> str:
-    """Download media using yt-dlp (supports many websites)."""
-    print("📥 מוריד באמצעות yt-dlp...")
+    """Download media using yt-dlp with browser impersonation."""
+    print("📥 מוריד באמצעות yt-dlp (עם התחזות לדפדפן)...")
 
-    # yt-dlp options
+    # Base yt-dlp options
     ydl_opts = {
         'outtmpl': os.path.join(temp_dir, '%(title)s.%(ext)s'),
-        'format': 'best[filesize<25M]/best',  # Prefer files under 25MB
+        'format': 'best[filesize<25M]/best',
         'quiet': False,
         'no_warnings': False,
         'extract_flat': False,
-        # Limit file size for Gmail
         'max_filesize': MAX_FILE_SIZE,
+        'nocheckcertificate': True,
+        # Browser impersonation - this is the key!
+        'impersonate': 'chrome',
     }
+
+    last_error = None
+
+    # Try each impersonation target
+    for target in IMPERSONATE_TARGETS:
+        ydl_opts['impersonate'] = target
+        print(f"   🎭 מנסה התחזות ל-{target}...")
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=True)
+
+                if info:
+                    if 'requested_downloads' in info:
+                        filepath = info['requested_downloads'][0]['filepath']
+                    else:
+                        files = glob.glob(os.path.join(temp_dir, '*'))
+                        if files:
+                            filepath = max(files, key=os.path.getctime)
+                        else:
+                            raise Exception("לא נמצא קובץ שהורד")
+
+                    print(f"   ✅ הצליח עם {target}!")
+                    return filepath
+
+        except Exception as e:
+            last_error = e
+            # Clean temp dir for next attempt
+            for f in glob.glob(os.path.join(temp_dir, '*')):
+                try:
+                    os.remove(f)
+                except:
+                    pass
+            continue
+
+    # If all impersonation attempts failed, try without impersonation
+    print("   🔄 מנסה בלי התחזות...")
+    ydl_opts.pop('impersonate', None)
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
 
-            # Find the downloaded file
             if info:
-                # Try to get the filename from info
                 if 'requested_downloads' in info:
                     filepath = info['requested_downloads'][0]['filepath']
                 else:
-                    # Search for downloaded file in temp dir
                     files = glob.glob(os.path.join(temp_dir, '*'))
                     if files:
                         filepath = max(files, key=os.path.getctime)
@@ -97,11 +147,11 @@ def download_with_ytdlp(url: str, temp_dir: str) -> str:
                         raise Exception("לא נמצא קובץ שהורד")
 
                 return filepath
-            else:
-                raise Exception("yt-dlp לא הצליח לחלץ מידע")
 
-    except yt_dlp.utils.DownloadError as e:
-        raise Exception(f"שגיאת הורדה: {e}")
+    except Exception as e:
+        last_error = e
+
+    raise Exception(f"שגיאת הורדה: {last_error}")
 
 
 def download_file(url: str) -> tuple[bytes, str]:
@@ -112,21 +162,17 @@ def download_file(url: str) -> tuple[bytes, str]:
     print(f"🔗 URL: {url}\n")
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        # Choose download method
         if is_direct_media_url(url):
             filepath = download_with_requests(url, temp_dir)
         else:
-            # Use yt-dlp for complex URLs (YouTube, Twitter, Instagram, etc.)
             filepath = download_with_ytdlp(url, temp_dir)
 
-        # Read the file
         filename = os.path.basename(filepath)
         file_size = os.path.getsize(filepath)
 
         print(f"\n📁 שם הקובץ: {filename}")
         print(f"📊 גודל: {file_size / (1024*1024):.2f} MB")
 
-        # Check file size
         if file_size > MAX_FILE_SIZE:
             raise Exception(
                 f"❌ הקובץ גדול מדי! ({file_size / (1024*1024):.2f} MB > 25 MB)\n"
@@ -143,13 +189,11 @@ def send_email(file_content: bytes, filename: str, source_url: str):
     """Send email with file attachment."""
     print(f"\n📧 שולח אימייל ל: {GMAIL_ADDRESS}")
 
-    # Create message
     msg = MIMEMultipart()
     msg['From'] = GMAIL_ADDRESS
     msg['To'] = GMAIL_ADDRESS
     msg['Subject'] = f"קובץ מדיה: {filename}"
 
-    # Email body
     body = f"""קובץ מדיה שהורד מהכתובת:
 {source_url}
 
@@ -158,7 +202,6 @@ def send_email(file_content: bytes, filename: str, source_url: str):
 """
     msg.attach(MIMEText(body, 'plain', 'utf-8'))
 
-    # Attach file
     attachment = MIMEBase('application', 'octet-stream')
     attachment.set_payload(file_content)
     encoders.encode_base64(attachment)
@@ -168,7 +211,6 @@ def send_email(file_content: bytes, filename: str, source_url: str):
     )
     msg.attach(attachment)
 
-    # Send email
     try:
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
@@ -193,7 +235,6 @@ def main():
 
     args = parser.parse_args()
 
-    # Get URL from argument or ask user
     url = args.url
     if not url:
         url = input("הכנס URL של תמונה או סרטון: ").strip()
@@ -202,18 +243,13 @@ def main():
         print("❌ לא הוזן URL!")
         sys.exit(1)
 
-    # Validate URL
     if not url.startswith(('http://', 'https://')):
         print("❌ URL לא תקין! חייב להתחיל ב-http:// או https://")
         sys.exit(1)
 
     try:
-        # Download file
         file_content, filename = download_file(url)
-
-        # Send email
         send_email(file_content, filename, url)
-
         print("\n🎉 הפעולה הושלמה בהצלחה!")
 
     except Exception as e:
