@@ -55,7 +55,7 @@ MAX_FILE_SIZE = 25 * 1024 * 1024
 
 # Supported media types
 SUPPORTED_IMAGES = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
-SUPPORTED_VIDEOS = {'.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v'}
+SUPPORTED_VIDEOS = {'.mp4', '.webm', '.mov', '.avi', '.mkv', '.m4v', '.ogv', '.ogg'}
 SUPPORTED_MEDIA = SUPPORTED_IMAGES | SUPPORTED_VIDEOS
 
 # Browser impersonation targets
