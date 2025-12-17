@@ -62,6 +62,37 @@ SUPPORTED_MEDIA = SUPPORTED_IMAGES | SUPPORTED_VIDEOS
 IMPERSONATE_TARGETS = ['chrome', 'firefox', 'safari']
 
 
+def get_wikimedia_direct_url(wiki_url: str) -> str | None:
+    """Convert a Wikimedia File: page URL to direct CDN URL using the API."""
+    if '/wiki/File:' not in wiki_url:
+        return None
+
+    try:
+        # Extract filename from URL
+        filename = wiki_url.split('/wiki/File:')[-1].split('?')[0]
+
+        # Use Wikimedia API to get direct URL
+        api_url = f"https://commons.wikimedia.org/w/api.php?action=query&titles=File:{filename}&prop=imageinfo&iiprop=url&format=json"
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36'
+        }
+
+        response = requests.get(api_url, headers=headers, timeout=10)
+        data = response.json()
+
+        pages = data.get('query', {}).get('pages', {})
+        for page_id, page_data in pages.items():
+            if 'imageinfo' in page_data:
+                direct_url = page_data['imageinfo'][0]['url']
+                print(f"🔄 המרה ל-URL ישיר: {direct_url[:80]}...")
+                return direct_url
+    except Exception as e:
+        print(f"⚠️ לא ניתן להמיר ל-URL ישיר: {e}")
+
+    return None
+
+
 def is_direct_media_url(url: str) -> bool:
     """Check if URL is a direct link to a media file (not a page)."""
     lower_url = url.lower().split('?')[0]
@@ -227,6 +258,12 @@ def download_file(url: str, proxy: str = None) -> tuple[bytes, str]:
         display_proxy = proxy.split('@')[-1] if '@' in proxy else proxy
         print(f"🌐 Proxy: {display_proxy}")
     print()
+
+    # Try to convert Wikimedia page URLs to direct URLs
+    if 'commons.wikimedia.org/wiki/File:' in url:
+        direct_url = get_wikimedia_direct_url(url)
+        if direct_url:
+            url = direct_url
 
     with tempfile.TemporaryDirectory() as temp_dir:
         if is_direct_media_url(url):
