@@ -63,8 +63,16 @@ IMPERSONATE_TARGETS = ['chrome', 'firefox', 'safari']
 
 
 def is_direct_media_url(url: str) -> bool:
-    """Check if URL is a direct link to a media file."""
+    """Check if URL is a direct link to a media file (not a page)."""
     lower_url = url.lower().split('?')[0]
+
+    # Wikimedia/Wikipedia page URLs should use yt-dlp, not direct download
+    if 'commons.wikimedia.org/wiki/' in lower_url:
+        return False
+    if 'wikipedia.org/wiki/' in lower_url:
+        return False
+
+    # Check if it's a direct media file URL
     return any(lower_url.endswith(ext) for ext in SUPPORTED_MEDIA)
 
 
