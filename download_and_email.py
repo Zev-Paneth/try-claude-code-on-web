@@ -129,7 +129,7 @@ def download_with_ytdlp(url: str, temp_dir: str, proxy: str = None) -> str:
     else:
         print("📥 מוריד באמצעות yt-dlp (עם התחזות לדפדפן)...")
 
-    # Base yt-dlp options
+    # Base yt-dlp options with browser-like headers
     ydl_opts = {
         'outtmpl': os.path.join(temp_dir, '%(title)s.%(ext)s'),
         'format': 'best[filesize<25M]/best',
@@ -139,6 +139,17 @@ def download_with_ytdlp(url: str, temp_dir: str, proxy: str = None) -> str:
         'max_filesize': MAX_FILE_SIZE,
         'nocheckcertificate': True,
         'impersonate': 'chrome',
+        # Add browser-like headers to bypass blocks
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Referer': 'https://www.google.com/',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        },
     }
 
     # Add proxy if specified
