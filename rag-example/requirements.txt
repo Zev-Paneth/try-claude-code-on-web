@@ -1,9 +1,0 @@
-# RAG Example - Dependencies
-# דוגמה זו משתמשת רק בספרייה הסטנדרטית של Python
-# אין צורך בהתקנות נוספות
-
-# עבור הרחבות עתידיות, אפשר להוסיף:
-# langchain>=0.1.0
-# openai>=1.0.0
-# chromadb>=0.4.0
-# sentence-transformers>=2.2.0
