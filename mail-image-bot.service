@@ -1,0 +1,24 @@
+[Unit]
+Description=mail-image-bot - replies to mails containing an image link with the image attached
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mailbot
+Group=mailbot
+EnvironmentFile=/opt/mail-image-bot/mail-image-bot.env
+ExecStart=/opt/mail-image-bot/venv/bin/python /opt/mail-image-bot/bot.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
